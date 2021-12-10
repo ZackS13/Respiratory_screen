@@ -59,3 +59,5 @@ The third table, "summary_stats.csv", provides summary statistics for each of th
 
 Finally, it will produce an upset figure, "resp_upset_plot.pdf",  based on new respiratory codes in your local data. <br />
 Below is a sample with simulated data
+
+![Upset](simulated_upset.png)
