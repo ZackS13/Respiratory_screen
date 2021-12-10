@@ -6,16 +6,18 @@ In order to run this script the institution needs to have two CSV files. The fir
 
 | Patient Identifier <br /> (numerical)	 | Positive COVID Date <br /> (mm-dd-yyyy) | ICD Code or Lab <br />  (ICD code or lab) | 
 | ------ | ------ | ------ | 
-|  | |  | 
-|  |  | | 
+| <br /> | |  | 
+| <br /> |  | | 
+| <br /> |  | | 
 
 
 The second CSV file, csv_concepts.csv should be arranged in the folloing manner:
 
 | Patient Identifier <br /> (numerical)	| Concept Code Type <br /> (string stating one of four types of concepts 'ICD', 'CPT', 'LOINC', or 'RxNorm') | Concept Code ID <br /> (string)	 | Column 4 Date <br /> (mm-dd-yyyy)  |
 | ------ | ------ | ------ | ------ |
-|  |  | |  |
-|  |  | |  |
+| <br /> |  | |  |
+| <br /> |  | |  |
+| <br /> |  | | 
 
 The ICD code should be a alphanumeric format without periods  <br /> 
 The CPT should be in numeric format  <br /> 
@@ -29,15 +31,16 @@ The first is the table for chart review ("chart_review.csv"). It will include 13
 | patient_ID| label| COVID_date |
 | ------ | ------ | ------ | 
 | xxxxxxxxx | COPD | yyyy-mm-dd | 
-|  |  | |  
-|  |  | |   
+| <br /> |  | |  
+| <br /> |  | | 
+| <br /> |  | | 
 
 The second is a table ("new_resp_dates,csv") of all of the new respiratory codes for each of the identified patients to help with chart review for identifying each with ongoing symptoms
 | patient_ID| Concept_type| Concept_ID | Concept_date | code_label | COVID_date|
 | ------ | ------ | ------ |  ------ | ------ | ------ | 
 | xxxxxx | ICD |J17 | xxxx-xx-xx |COPD |xxxx-xx-xx  |  
 | xxxxxx | CPT |94761 | xxxx-xx-xx  | mult_oxy |xxxx-xx-xx  |  
-|  |  | |  | |  |  
+| <br /> |  | |  | |  |  
 
 
 The third table, "summary_stats.csv", provides summary statistics for each of the labels: 
