@@ -1,7 +1,7 @@
-###Title:  COVID Respiratory Symptom Identifier
+###Title: eMERGE COVID Respiratory Symptom Identifier
 ###Author: Zachary Strasser
 ###Date: 11/30/21
-###Purpose: Takes two specific CSV files extracted from an EHR and identies 130 patients with possible ongoing pulmonary symptoms 2/2 to COVID-19
+###Purpose: Takes two specific CSV files extracted from an EHR and generates multiple files for chart review and data analysis
 
 #load libraries
 library('dplyr')
@@ -431,11 +431,33 @@ new_not_old_col_stats = data.frame(colSums(test[,c('PNA', 'COPD', 'asthma', 'res
                                                    'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                                    'mult_oxy', 'PFT', 'PST')]))
 
-
-##############SAMPLING FROM NEW AND NOT OLD GROUPS#################################################################3
+##############SAMPLING RANDOMLY FROM NEW AND NOT OLD GROUPS FOR PATIENT LIST#################################################################3
 
 #add back patient ID's
 test[,'patient_ID'] = csv_patient_list$patient_ID
+
+#COPY OF TEST
+test_2 = test
+
+test_2['summed_row'] = rowSums(test_2[,c('PNA', 'COPD', 'asthma', 'resp_failure', 'lower_resp', 'resp_signs_symptoms', 
+                                         'SABA', 'SAMA', 'LABA', 'LAMA', 'mult_oxy', 'PFT', 'PST')])
+
+respiratory_patients_2 = test_2$patient_ID[test_2$summed_row>=1]
+
+#set seed
+set.seed(5)
+
+#randomly selected 100 at random
+random_patient_list = sample(respiratory_patients_2, 100)
+random_patient_list = csv_patient_list[csv_patient_list$patient_ID %in% random_patient_list,][,c('patient_ID', 'COVID_date')]
+
+#write the random list
+write.csv(random_patient_list, './random_patient_list.csv')
+
+#remove unneccesary data tables
+rm(test_2, respiratory_patients_2, random_patient_list)
+
+##############GENERATES LIST BY SAMPLING EQUALLY FROM EACH LABEL OF NEW AND NOT OLD GROUPS#################################################################3
 
 #pivot the table from wide to long
 test.long <- pivot_longer(test, cols=1:13, names_to = "Label", values_to = "Presence")
@@ -452,8 +474,14 @@ chart_review = test.long %>% group_by(Label) %>% sample_n(10)
 #remove unnecessary tables
 rm(codes_present_90_365, codes_present_before_neg_14, positive_code, csv_concepts, new.function, test)
 
-#rename stat tables and combine
-names(total_col_stats) <-'total_resp_labels'
+#write a table for chart review, that gives the patient ID, the phenotype used to select this ID, and the COVID date
+stratified_patient_list = merge(chart_review, csv_patient_list[,c('patient_ID', 'COVID_date')], by = 'patient_ID')
+write.csv(stratified_patient_list, './stratified_patient_list.csv')
+rm(csv_patient_list)
+
+###############create summary statistics#################################################################
+
+######stats) <-'total_resp_labels'
 names(new_col_stats) <- 'new_resp_labels'
 names(new_not_old_col_stats) <- 'new_not_old_labels'
 
@@ -463,15 +491,12 @@ rm(total_col_stats, new_col_stats, new_not_old_col_stats)
 #write a table for all identified phenotypes
 write.csv(summary, './summary_stats.csv', )
 
-#write a table for chart review, that gives the patient ID, the phenotype used to select this ID, and the COVID date
-chart_review = merge(chart_review, csv_patient_list[,c('patient_ID', 'COVID_date')], by = 'patient_ID')
-write.csv(chart_review, './chart_review.csv')
-rm(csv_patient_list)
+######################################creates reference list for help with chart review#####################
 
-#write a table with all of the new_resp_dates
+#write a table with all of the new_resp_dates for all of the patients
 fwrite(reference_codes, './new_resp_dates.csv')
 
-######create upset plot###########
+##############################################create upset plot##############################################
 test.long[,"Present"] = 1
 check = pivot_wider(test.long, names_from=Label, values_from=Present)
 check[is.na(check)]<-0
@@ -485,5 +510,5 @@ pdf(file="resp_upset_plot.pdf", onefile=FALSE) # or other device
 upset(check_2, order.by = 'freq', nintersects=10)
 dev.off()
 
-#save image of workspace
+##################save image of workspace####################################################################
 save.image('complete list')
