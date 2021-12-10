@@ -34,7 +34,7 @@ The first is the table for chart review ("chart_review.csv"). It will include 13
 | <br /> |  | | 
 | <br /> |  | | 
 
-The second is a table ("new_resp_dates,csv") of all of the new respiratory codes for each of the identified patients to help with chart review for identifying each with ongoing symptoms
+The second table ("new_resp_dates,csv") lists all new respiratory codes for each of the identified patients to help with chart review for identifying each with ongoing symptoms
 | patient_ID| Concept_type| Concept_ID | Concept_date | code_label | COVID_date|
 | ------ | ------ | ------ |  ------ | ------ | ------ | 
 | xxxxxx | ICD |J17 | xxxx-xx-xx |COPD |xxxx-xx-xx  |  
