@@ -1,5 +1,5 @@
 # Respiratory_screen
-This project selects 130 patients with potentially persistent or worsened respiratory symptoms due to COVID-19 based on EHR records. It takes in two CSV files (with specific specifications in a separate Word file) and produces 3 tables for analysis and chart review, and an UpSet Plot
+This project selects patients with potentially persistent or worsened respiratory symptoms due to COVID-19 based on EHR records. It takes in two CSV files (with specific specifications in a separate Word file) and produces 4 tables for analysis and chart review, and an UpSet Plot
 
 In order to run this script the institution needs to have two CSV files. The first csv_patient_list should be arranged in the following way:
 
@@ -23,9 +23,9 @@ The CPT should be in numeric format  <br />
 The RxNorm should be in numeric format   <br /> 
 
 
-The script produces three CSV files as output.
+The script produces four CSV files as output.
 
-The first is the table for chart review ("chart_review.csv"). It will include 130 patients including their identifier, the respiratory label that flagged them as a potential respiratory symptom case, and the date of COVID: 
+The first two tables are for chart review ("stratified_patient_list.csv" and "random_patient_list.csv"). The random_patient_list is of 100 patients and includes the patient_ID and the COVID_date. The stratified_patient_list.csv includes 130 patients (10 from each label) and includes their identifier, the respiratory label that flagged them as a potential respiratory symptom case, and the date of COVID: 
 
 | patient_ID| label| COVID_date |
 | ------ | ------ | ------ | 
@@ -34,7 +34,7 @@ The first is the table for chart review ("chart_review.csv"). It will include 13
 | <br /> |  | | 
 | <br /> |  | | 
 
-The second table ("new_resp_dates,csv") lists all new respiratory codes for each of the identified patients to help with chart review for identifying each with ongoing symptoms
+The third table ("new_resp_dates,csv") lists all new respiratory codes for each of the identified patients to help with chart review for identifying when a patient was flagged as having a potential ongoing pulmonary disease
 | patient_ID| Concept_type| Concept_ID | Concept_date | code_label | COVID_date|
 | ------ | ------ | ------ |  ------ | ------ | ------ | 
 | xxxxxx | ICD |J17 | xxxx-xx-xx |COPD |xxxx-xx-xx  |  
@@ -59,7 +59,7 @@ The third table, "summary_stats.csv", provides summary statistics for each of th
 | PFT |  | |  |
 | PST |  | |  |
 
-Finally, it will produce an upset figure, "resp_upset_plot.pdf",  based on new respiratory codes in your local data. <br />
+The script also produces an upset figure, "resp_upset_plot.pdf",  based on new respiratory codes in your local data. <br />
 Below is a sample with simulated data
 
 ![Upset](simulated_upset.png)
