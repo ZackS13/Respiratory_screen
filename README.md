@@ -25,7 +25,7 @@ The RxNorm should be in numeric format   <br />
 
 The script produces four CSV files as output.
 
-The first two tables are for chart review ("stratified_patient_list.csv" and "random_patient_list.csv"). The random_patient_list is of 100 patients and includes the patient_ID and the COVID_date. The stratified_patient_list.csv includes 130 patients (10 from each label) and includes their identifier, the respiratory label that flagged them as a potential respiratory symptom case, and the date of COVID: 
+The first two tables are for chart review ("stratified_patient_list.csv" and "random_patient_list.csv"). The random_patient_list is of 100 patients and includes the patient_ID and the COVID_date. The stratified_patient_list.csv includes 130 patients (10 from each label) and includes their identifier, the respiratory label that flagged the specific as a potential respiratory symptom case, and the date of COVID. Below is a sample of the "stratified_patient_list": 
 
 | patient_ID| label| COVID_date |
 | ------ | ------ | ------ | 
