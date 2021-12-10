@@ -10,7 +10,7 @@ In order to run this script the institution needs to have two CSV files. The fir
 | <br /> |  | | 
 
 
-The second CSV file, csv_concepts.csv should be arranged in the folloing manner:
+The second CSV file, csv_concepts.csv should be arranged in the following manner:
 
 | Patient Identifier <br /> (numerical)	| Concept Code Type <br /> (string stating one of four types of concepts 'ICD', 'CPT', 'LOINC', or 'RxNorm') | Concept Code ID <br /> (string)	 | Column 4 Date <br /> (mm-dd-yyyy)  |
 | ------ | ------ | ------ | ------ |
