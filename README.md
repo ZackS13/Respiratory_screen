@@ -1,5 +1,5 @@
 # Respiratory_screen
-This project selects 130 patients with potentially persistent or worsened respiratory symptoms due to COVID-19 based on EHR records. It takes in two CSV files with specific specifications listed below. It produces 3 tables for analysis and chart review. 
+This project selects 130 patients with potentially persistent or worsened respiratory symptoms due to COVID-19 based on EHR records. It takes in two CSV files (with specific specifications in a separate Word file) and produces 3 tables for analysis and chart review, and an UpSet Plot
 
 In order to run this script the institution needs to have two CSV files. The first csv_patient_list should be arranged in the following way:
 
