@@ -34,7 +34,7 @@ The first two tables are for chart review ("stratified_patient_list.csv" and "ra
 | <br /> |  | | 
 | <br /> |  | | 
 
-The third table ("new_resp_dates,csv") lists all new respiratory codes for each of the identified patients to help with chart review for identifying when a patient was flagged as having a potential ongoing pulmonary disease
+The third table ("new_resp_dates.csv") lists all new respiratory codes for each of the identified patients to help with chart review for identifying when a patient is flagged as having potential, ongoing pulmonary disease
 | patient_ID| Concept_type| Concept_ID | Concept_date | code_label | COVID_date|
 | ------ | ------ | ------ |  ------ | ------ | ------ | 
 | xxxxxx | ICD |J17 | xxxx-xx-xx |COPD |xxxx-xx-xx  |  
@@ -42,7 +42,7 @@ The third table ("new_resp_dates,csv") lists all new respiratory codes for each 
 | <br /> |  | |  | |  |  
 
 
-The third table, "summary_stats.csv", provides summary statistics for each of the labels: 
+The fourth table, "summary_stats.csv", provides summary statistics for each of the labels: 
 | | total_resp_labels| new_resp_labels| new_not_old_labels |
 | ------ | ------ | ------ | ------ | 
 | PNA |  | |  | 
