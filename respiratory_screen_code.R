@@ -409,7 +409,7 @@ test = (data.frame(lapply(csv_patient_list[,c('PNA', 'COPD', 'asthma', 'resp_fai
                                               'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                               'mult_oxy', 'PFT', 'PST')], new.function)))
 
-#check total stats of new and old
+#check total stats of new 
 new_col_stats = data.frame(colSums(test[,c('PNA', 'COPD', 'asthma', 'resp_failure', 'lower_resp', 
                                            'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                            'mult_oxy', 'PFT', 'PST')]))
@@ -426,7 +426,7 @@ test = (data.frame(lapply(csv_patient_list[,c('PNA', 'COPD', 'asthma', 'resp_fai
                                               'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                               'mult_oxy', 'PFT', 'PST')], new.function)))
 
-#check total stats of new and now old
+#check total stats if new and not old
 new_not_old_col_stats = data.frame(colSums(test[,c('PNA', 'COPD', 'asthma', 'resp_failure', 'lower_resp', 
                                                    'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                                    'mult_oxy', 'PFT', 'PST')]))
