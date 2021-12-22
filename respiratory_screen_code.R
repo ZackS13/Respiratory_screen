@@ -1,6 +1,6 @@
 ###Title: eMERGE COVID Respiratory Symptom Identifier
 ###Author: Zachary Strasser
-###Date: 11/30/21
+###Date: 12/21/21
 ###Purpose: Takes two specific CSV files extracted from an EHR and generates multiple files for chart review and data analysis
 
 #load libraries
@@ -39,23 +39,46 @@ pneumonia = c('A0103',	'A0222',	'A202',	'A212',	'A221',
               'J1289',	'J129',	'J13',	'J14',	'J150',	'J151',	'J1520',	
               'J15211',	'J15212',	'J1529',	'J153',	'J154',	'J155',	'J156',	
               'J157',	'J158',	'J159',	'J160',	'J168',	'J17',	'J180',	
-              'J181',	'J188',	'J189',	'J851',	'J95851')
+              'J181',	'J188',	'J189',	'J851',	'J95851',
+              'A0103',	'A0222',	'A202',	'A212',	'A221',	
+              '0310',	'4843',	
+              '48284',	'0951',	
+              '0521',	'0551',	'05679',	'4841',	'1124',	'1140',	
+              '1144',	'1145',	'11505',	'1304',	'1363',	
+              '1270',	'48801', '48811', '48881', '4870',	
+              '4800',	'4801',	'4802',	'J123',	'4803',	
+              '4808',	'4809', '4870',	'481',	'4822',	'4820',	'4821',	'48240',	
+              '48241',	'48242',	'48249',	'48232',	'48230', '48231', '48239',	'48282',	'48283',	
+              '4830',	'48281',	'48289',	'4829',	'4831',	'4838',	
+              '0730', '11515', '11595', '4847', '4848', '5171',	
+              '485', '481',	'J188',	'486',	'5130',	'99731'
+)
 
 #COPD and bronchiectasis defined by CCSR
 COPD = c('J410',	'J411',	'J418',	'J42',	'J430',	
          'J431',	'J432',	'J438',	'J439',	'J440',	
-         'J441',	'J449',	'J470',	'J471',	'J479')
+         'J441',	'J449',	'J470',	'J471',	'J479',
+         '4910',	'4911',	'4918',	'4919',	'4920', 
+         '4928',	'49122', '49321', '49121', 
+         '49122',	'49120', '49320', '496', 
+         '4941',	'4940'
+)
 
 #asthma defined by CCSR
 asthma = c('J4520',	'J4521',	'J4522',	'J4530',	'J4531',	
            'J4532',	'J4540',	'J4541',	'J4542',	'J4550',	
            'J4551',	'J4552',	'J45901',	'J45902',	'J45909',	
-           'J45990',	'J45991',	'J45998')
+           'J45990',	'J45991',	'J45998',
+           '49300', '49310',	'49302', '49312',	'49301', '49311',	
+           'J4551',	'J4552',	'49392',	'49391',	'49390',	
+           '49381',	'49382',	'49390')
 
 #respiratory failure; insufficiency; arrest defined by CCSR
 resp_failure = c('J80',	'J95821',	'J95822',	'J9600',	'J9601',	'J9602',	'J9610',	
                  'J9611',	'J9612',	'J9620',	'J9621',	'J9622',	'J9690',	
-                 'J9691',	'J9692',	'R092')
+                 'J9691',	'J9692',	'R092',
+                 '51882',	'51851',	'51853',	'51881',	'51883',	'7991'
+)
 
 #other specified and unspecified low resp disease defined by CCSR
 lower_resp = c('A065',	'A157',	'A158',	'A159',	'B400',	'B401',	'B402',	'B410',	
@@ -69,14 +92,31 @@ lower_resp = c('A065',	'A157',	'A158',	'A159',	'B400',	'B401',	'B402',	'B410',
                'J99',	'M0510',	'M05111',	'M05112',	'M05119',	'M05121',	'M05122',	
                'M05129',	'M05131',	'M05132',	'M05139',	'M05141',	'M05142',	
                'M05149',	'M05151',	'M05152',	'M05159',	'M05161',	'M05162',	
-               'M05169',	'M05171',	'M05172',	'M05179',	'M0519')
+               'M05169',	'M05171',	'M05172',	'M05179',	'M0519',
+               '0064',	'01000', '01001', '01002', '01003', '01004', '01005', '01006', '01080',
+               '01081', '01082', '01083', '01084', '01085', '01086', '01090', '01091',
+               '01092', '01093', '01094', '01095', '01096',
+               '01280',	'01281',	'01282',	'01283', '01284',	'01285',	'01286',
+               '1161',	'1171',	'4846',	'1175',	'1221',	'514',	
+               '5184',	'514',	'5183',		'5160',	'5162',	'5161',	'5168',	'515',	'51630',	'51631',	
+               '51632',	'51633',	'51634',	'51636',	'51637',	
+               '51635',	'5164',	'5165',	'51663',	
+               '51661',	'51662',	'51664',	'51669', '515',	'5169',	
+               '5130',	'51911',	'51919',	'51889',	'5194',	'5198',	'5199',	
+               '5178',	'71481'
+)
 
 #resp signs and symptoms defined by CCSR
 resp_signs_symptoms = c('R040',	'R041',	'R042',	'R0481',	'R0489',	'R049',	'R05',	
                         'R0600',	'R0601',	'R0602',	'R0603',	'R0609',	'R061',	
                         'R062',	'R063',	'R064',	'R065',	'R066',	'R067',	'R0681',	
                         'R0682',	'R0683',	'R0689',	'R069',	'R070',	'R071',	'R0781',	
-                        'R0782',	'R0901',	'R0902',	'R093',	'R0981',	'R0982')
+                        'R0782',	'R0901',	'R0902',	'R093',	'R0981',	'R0982',
+                        '7847', '7848', '78630', '78631', '78639', '78630', '7862',
+                        '78609', '78602', '78605', '51882', '78609', '7861', '78607',
+                        '78604', '78601', '7868', '78603', '78606', '78601', '7841', '78652',
+                        '79901', '79902', '7864', '78491'
+)
 
 ######group medications
 
@@ -211,6 +251,8 @@ csv_patient_list = csv_patient_list[csv_patient_list$patient_ID %in% csv_concept
 csv_patient_list = csv_patient_list[!duplicated(csv_patient_list$patient_ID),]
 
 #left join (make sure row number does not change for csv_concepts in this step)
+#####this will need to be inserted: 
+csv_concepts$patient_ID = as.integer(csv_concepts$patient_ID)
 csv_concepts = left_join(csv_concepts, csv_patient_list, by= 'patient_ID')
 #make should now match the number of rows in csv_concepts
 
@@ -234,7 +276,7 @@ codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='PNA' & ((csv_conc
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='PNA' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
 
 #store the patient details if the patient had resp_feature, but did not have it before COVID
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 
 #create variables representing new not old, new and old, and old
 csv_patient_list['PNA'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
@@ -249,7 +291,7 @@ reference_codes = positive_code
 #COPD
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='COPD' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='COPD' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['COPD'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                      csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                      csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -260,7 +302,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #asthma
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='asthma' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='asthma' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['asthma'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                        csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                        csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -271,7 +313,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #resp_failure
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='resp_failure' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='resp_failure' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['resp_failure'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                              csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                              csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -282,7 +324,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #lower_resp
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='lower_resp' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='lower_resp' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['lower_resp'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                            csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                            csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -293,7 +335,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #resp_signs
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='resp_signs_symptoms' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='resp_signs_symptoms' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['resp_signs_symptoms'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                                     csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                                     csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -304,7 +346,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #SABA
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='SABA' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='SABA' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['SABA'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                      csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                      csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -315,7 +357,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #SAMA
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='SAMA' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='SAMA' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['SAMA'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                      csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                      csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -326,7 +368,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #LABA
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='LABA' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='LABA' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['LABA'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                      csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                      csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -337,7 +379,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #LAMA
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='LAMA' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='LAMA' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['LAMA'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                      csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                      csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -348,7 +390,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #mult_oxy
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='mult_oxy' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='mult_oxy' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['mult_oxy'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                          csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                          csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -359,7 +401,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #PFT
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='PFT' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='PFT' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['PFT'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                     csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                     csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -370,7 +412,7 @@ reference_codes = rbind(reference_codes, positive_code)
 #PST
 codes_present_90_365 = csv_concepts[(csv_concepts$code_label=='PST' & ((csv_concepts$Concept_date-csv_concepts$COVID_date)>89) & (csv_concepts$Concept_date-csv_concepts$COVID_date)<366),]
 codes_present_before_neg_14 = csv_concepts[(csv_concepts$code_label=='PST' & (csv_concepts$Concept_date-csv_concepts$COVID_date)<(-14)),]
-positive_code = codes_present_90_365[(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
+positive_code = codes_present_90_365[!(codes_present_90_365$patient_ID %in% codes_present_before_neg_14$patient_ID),]
 csv_patient_list['PST'] = case_when(csv_patient_list$patient_ID %in% positive_code$patient_ID ~ 'new_not_old',
                                     csv_patient_list$patient_ID %in% codes_present_90_365$patient_ID ~ 'new_and_old',
                                     csv_patient_list$patient_ID %in% codes_present_before_neg_14$patient_ID ~ 'old',
@@ -409,7 +451,7 @@ test = (data.frame(lapply(csv_patient_list[,c('PNA', 'COPD', 'asthma', 'resp_fai
                                               'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                               'mult_oxy', 'PFT', 'PST')], new.function)))
 
-#check total stats of new 
+#check total stats of new and old
 new_col_stats = data.frame(colSums(test[,c('PNA', 'COPD', 'asthma', 'resp_failure', 'lower_resp', 
                                            'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                            'mult_oxy', 'PFT', 'PST')]))
@@ -426,7 +468,7 @@ test = (data.frame(lapply(csv_patient_list[,c('PNA', 'COPD', 'asthma', 'resp_fai
                                               'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                               'mult_oxy', 'PFT', 'PST')], new.function)))
 
-#check total stats if new and not old
+#check total stats of new and now old
 new_not_old_col_stats = data.frame(colSums(test[,c('PNA', 'COPD', 'asthma', 'resp_failure', 'lower_resp', 
                                                    'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
                                                    'mult_oxy', 'PFT', 'PST')]))
@@ -500,15 +542,15 @@ fwrite(reference_codes, './new_resp_dates.csv')
 test.long[,"Present"] = 1
 check = pivot_wider(test.long, names_from=Label, values_from=Present)
 check[is.na(check)]<-0
-check[,c('PNA', 'COPD', 'asthma', 'resp_failure', 'lower_resp', 
-         'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 
-         'mult_oxy', 'PFT', 'PST')]
+check[,c('PNA', 'COPD', 'asthma', 'resp_failure', 'lower_resp', 'resp_signs_symptoms')]
 check_2 = one_hot(as.data.table(check))
 
 #save upset plot
 pdf(file="resp_upset_plot.pdf", onefile=FALSE) # or other device
-upset(check_2, order.by = 'freq', nintersects=10)
+#####added this row
+upset(check_2, sets = c('PNA', 'COPD', 'asthma', 'resp_failure', 'lower_resp', 'resp_signs_symptoms', 'SABA', 'SAMA', 'LABA', 'LAMA', 'mult_oxy', 'PFT', 'PST'), order.by = 'freq', nintersects=15)
 dev.off()
 
 ##################save image of workspace####################################################################
 save.image('complete list')
+
